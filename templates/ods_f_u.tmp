@@ -1,0 +1,14 @@
+{#
+模板用法参见http://docs.jinkan.org/docs/jinja2/templates.html#id2
+#}
+-- 创建目标表
+CREATE TABLE IF NOT EXISTS {{table.name}}
+(
+{% for field in table.fields %}
+    {% if field.is_first %} {% else %},{% endif %}{{field.name.ljust(table.max_field_length)}}    {{field.type.ljust(9)}} COMMENT    '{{field.name_zh}}'
+{% endfor %}
+)COMMENT '{{table.name_zh}}'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t'
+STORED AS orc
+;
